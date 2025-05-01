@@ -1,4 +1,5 @@
 import { getAllTask } from "@/api/taskFetch";
+import CreatedTaskComponent from "@/components/TaskComponents/CreatedTaskComponent";
 import styles from "@/styles/Home.module.css";
 import { useEffect, useState } from "react";
 
@@ -7,10 +8,8 @@ import { useEffect, useState } from "react";
 export default function Home() {
   //Estados para las tareas
   const [tasks, setTasks] = useState([]); //Listado de tareas
-
-
-
-
+  const [isCreating, setIsCreating] = useState(false); //Indica si se esta creando una tarea
+  
 
   //Funcion para conseguir todas las tareas
   const getAllTasksAux = async () => {
@@ -20,6 +19,15 @@ export default function Home() {
   useEffect(() => {
     getAllTasksAux();
   }, []);
+
+  //Funcion para abrir formulario de crear tarea
+  const handlerCreateTask = () => {
+    setIsCreating(true);
+  };
+  //Funcion para cerrar el formulario de crear tarea
+  const closeTaskCreation = () => {
+    setIsCreating(false);
+  };
 
   return (
     <>
@@ -38,6 +46,22 @@ export default function Home() {
                   <span>Completado: {task.completed} </span>
                 })
               )}
+          </div>
+          <hr/>
+          <div className={styles.homeActions}>
+              {(!isCreating ? (
+                <button
+                className={styles.createButton}
+                onclick={handlerCreateTask}
+                >
+                  Crear Tarea
+                </button>
+              ): (
+                <CreatedTaskComponent 
+                  setIsCreating={setIsCreating}
+                  closeTaskCreation={closeTaskCreation}
+                />
+              ))}
           </div>
         </main>
         <footer className={styles.footer}>
