@@ -1,9 +1,26 @@
-
+import { getAllTask } from "@/api/taskFetch";
 import styles from "@/styles/Home.module.css";
+import { useEffect, useState } from "react";
 
 
 
 export default function Home() {
+  //Estados para las tareas
+  const [tasks, setTasks] = useState([]); //Listado de tareas
+
+
+
+
+
+  //Funcion para conseguir todas las tareas
+  const getAllTasksAux = async () => {
+    const tasksAux = await getAllTask();
+    setTasks(tasksAux.data);
+  };
+  useEffect(() => {
+    getAllTasksAux();
+  }, []);
+
   return (
     <>
       <Head>
@@ -14,7 +31,14 @@ export default function Home() {
       </Head>
       
         <main className={styles.main}>
-          
+          <div className={styles.tasksList}>
+              {(tasks.length > 0) (
+                (tasks).map((task, index) =>{
+                  <span>Tarea: {task.title}</span>,
+                  <span>Completado: {task.completed} </span>
+                })
+              )}
+          </div>
         </main>
         <footer className={styles.footer}>
           
