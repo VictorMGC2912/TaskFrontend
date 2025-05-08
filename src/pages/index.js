@@ -32,6 +32,7 @@ export default function Home() {
 
   //Funcion para borrar tarea segun ID
   const deleteTaskById = async(id) => {
+    console.log("ID", id)
     try{
       await deleteTask(id);
       fetchTask();
@@ -53,10 +54,10 @@ export default function Home() {
 
   return (
     <>
-      <div className={styles.container}>
+      <div>
         <h1>App de Tareas</h1>
         <CreatedTaskComponent onCreate={addTask}/>
-        <TaskList task={tasks} onDelete={deleteTaskById} onToggle={toggleTask}/>
+        <TaskList tasks={tasks} onDelete={deleteTaskById} onToggle={toggleTask}/>
 
       </div>
       

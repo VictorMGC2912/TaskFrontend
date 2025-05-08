@@ -14,12 +14,12 @@ export const createTask = async (title, description) => {
     return response.data;
 }
 
-export const updateTask = async (id, completed, title, description) => {
-    const response = await axios.put(`${taskUrlBack}/${id}`, {completed, title, description});
+export const updateTask = async (_id, completed, title, description) => {
+    const response = await axios.put(`${taskUrlBack}/${_id}`, {completed, title, description});
     return response.data;
 }
 
-export const deleteTask = async (id) => {
-    const response = await axios.delete(`${taskUrlBack}/${id}`);
+export const deleteTask = async (_id) => {
+    const response = await axios.delete(`${taskUrlBack}/${_id}`);
     return response.data;
 }
