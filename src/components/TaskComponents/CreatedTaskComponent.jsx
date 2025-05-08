@@ -4,20 +4,11 @@ export default function CreatedTaskComponent({ onCreateTitle, onCreateDescriptio
     const {newTitle, setNewTitle} = useState('');
     const {newDescription, setNewDescription} = ('');
 
-    const handleCreateTitle = () => {
-        if(!newTitle.trim()) return;
-        onCreateTitle(newTitle);
-        setNewTitle('');
-    }
-    const handleCreateDescription = () => {
-        if(!newDescription.trim()) return;
-        onCreateDescription(newDescription);
-        setNewDescription('');
-    }
-
     const handleCreate = () => {
-        handleCreateTitle()
-        handleCreateDescription()
+        if(!newTitle.trim()) return;
+        onCreateTitle(newTitle, newDescription);
+        setNewTitle('');
+        setNewDescription('')
     }
 
   return (
