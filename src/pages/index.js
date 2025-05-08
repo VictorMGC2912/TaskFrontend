@@ -1,5 +1,6 @@
-import { getAllTask } from "@/api/taskFetch";
+import { createTask, deleteTask, getAllTask, updateTask } from "@/api/taskFetch";
 import CreatedTaskComponent from "@/components/TaskComponents/CreatedTaskComponent";
+import TaskList from "@/components/TaskComponents/TaskList"
 import styles from "@/styles/Home.module.css";
 import { useEffect, useState } from "react";
 
@@ -11,53 +12,53 @@ export default function Home() {
   
 
   //Funcion para conseguir todas las tareas
-  const getAllTasksAux = async () => {
+  const fetchTask = async () => {
     const tasksAux = await getAllTask();
     setTasks(tasksAux.data);
   };
   useEffect(() => {
-    getAllTasksAux();
+    fetchTask();
   }, []);
+
+  //Funcion para a crear tareas
+  const addTask = async (title, description) => {
+    try {
+      await createTask(title, description);
+      fetchTask();
+    }catch(error){
+      console.error('Error al agregar Tarea', error)
+    }
+  };
+
+  //Funcion para borrar tarea segun ID
+  const deleteTaskById = async(id) => {
+    try{
+      await deleteTask(id);
+      fetchTask();
+    }catch(error){
+      console.error('Error al borrar tarea', error)
+    }
+  };
+
+  //Funcion para actualizar tareas
+  const toggleTask = async (id, completed, title, description) => {
+    try{
+      await updateTask(id, completed, title, description);
+      fetchTask()
+    }catch(error){
+      console.error('Error al actualizar tarea', error)
+    }
+  };
 
 
   return (
     <>
-      
-      
-        <main className={styles.main}>
-        <div className={styles.tasksList}>
-  {tasks.length > 0 ? (
-    tasks.map((task, index) => (
-      <div key={index}>
-        <span>Tarea: {task.title}</span><br />
-        <span>Descripcion: {task.description}</span><br />
-        <span>Completado: {task.completed ? 'Sí' : 'No'}</span>
+      <div className={styles.container}>
+        <h1>App de Tareas</h1>
+        <CreatedTaskComponent onCreate={addTask}/>
+        <TaskList task={tasks} onDelete={deleteTaskById} onToggle={toggleTask}/>
+
       </div>
-    ))
-  ) : (
-    <p>No hay tareas</p>
-  )}
-</div>
-          <hr/>
-          <div className={styles.homeActions}>
-              {(!isCreating ? (
-                <button
-                className={styles.createButton}
-                onClick={handlerCreateTask}
-                >
-                  Crear Tarea
-                </button>
-              ): (
-                <CreatedTaskComponent 
-                  setIsCreating={setIsCreating}
-                  closeTaskCreation={closeTaskCreation}
-                />
-              ))}
-          </div>
-        </main>
-        <footer className={styles.footer}>
-          
-        </footer>
       
     </>
   );
