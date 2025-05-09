@@ -9,17 +9,21 @@ export const getAllTask = async () => {
 };
 
 //CREAR TAREAS
-export const createTask = async (title, description) => {
-    const response = await axios.post(taskUrlBack, {title, description});
+export const createTask = async (title, description, completed) => {
+    const response = await axios.post(taskUrlBack, {title, description, completed});
     return response.data;
 }
 
-export const updateTask = async (_id, completed, title, description) => {
-    const response = await axios.put(`${taskUrlBack}/${_id}`, {completed, title, description});
+export const updateTask = async (id, completed, title, description) => {
+    const data = {};
+    if (typeof completed === 'boolean') data.completed = completed;
+    if (title !== undefined) data.title = title;
+    if (description !== undefined) data.description = description;
+    const response = await axios.put(`${taskUrlBack}${id}`, data);
     return response.data;
 }
 
-export const deleteTask = async (_id) => {
-    const response = await axios.delete(`${taskUrlBack}/${_id}`);
+export const deleteTask = async (id) => {
+    const response = await axios.delete(`${taskUrlBack}${id}`);
     return response.data;
 }
